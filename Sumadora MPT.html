@@ -1,0 +1,902 @@
+<html lang="es"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casio HR-100RC – Master Professional Training</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#0d0d10;font-family:'Rajdhani',sans-serif;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  background-image:
+    radial-gradient(ellipse at 15% 15%,rgba(30,50,100,.4) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 85%,rgba(80,20,120,.3) 0%,transparent 55%),
+    radial-gradient(ellipse at 50% 0%,rgba(20,20,40,.8) 0%,transparent 40%);
+}
+
+/* ══════════════════════════════════════
+   LOGIN SCREEN
+══════════════════════════════════════ */
+#loginScreen{
+  width:100%;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px;
+}
+.login-box{
+  background:linear-gradient(160deg,#12121a 0%,#1a1a28 60%,#12121a 100%);
+  border:1px solid #2a2a40;border-radius:20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.8),0 0 0 1px rgba(100,120,200,.1),inset 0 1px 0 rgba(255,255,255,.05);
+  width:100%;max-width:400px;overflow:hidden;
+  position:relative;
+}
+.login-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,#3a1a6a,#4a6ef5,#7a3abf,#4a6ef5,#3a1a6a);
+  background-size:200% 100%;
+  animation:shiftGrad 4s linear infinite;
+}
+@keyframes shiftGrad{from{background-position:0% 0%}to{background-position:200% 0%}}
+
+.login-header{
+  padding:28px 28px 20px;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  border-bottom:1px solid #1e1e30;
+  background:linear-gradient(180deg,rgba(74,110,245,.06) 0%,transparent 100%);
+}
+.login-logo-wrap{
+  position:relative;width:80px;height:80px;
+}
+.login-logo{
+  width:80px;height:80px;object-fit:contain;border-radius:12px;
+  box-shadow:0 0 0 2px rgba(74,110,245,.3),0 0 20px rgba(74,110,245,.2),0 8px 24px rgba(0,0,0,.6);
+  background:#fff;padding:4px;
+}
+.login-logo-glow{
+  position:absolute;inset:-4px;border-radius:16px;
+  background:conic-gradient(from 0deg,#3a1a6a,#4a6ef5,#7a3abf,#4a6ef5,#3a1a6a);
+  z-index:-1;opacity:.5;animation:spinGlow 6s linear infinite;
+  filter:blur(6px);
+}
+@keyframes spinGlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+.login-title{font-family:'Orbitron',monospace;font-size:16px;font-weight:900;color:#e0e8ff;letter-spacing:2px;text-align:center;text-transform:uppercase}
+.login-subtitle{font-size:10px;color:#5a6a8a;letter-spacing:2px;text-transform:uppercase;text-align:center}
+
+.login-body{padding:24px 28px 28px;display:flex;flex-direction:column;gap:14px}
+.login-field label{display:block;font-size:10px;color:#5a6a9a;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px}
+.login-field input{
+  width:100%;background:#0a0a14;border:1px solid #2a2a40;border-radius:8px;
+  padding:11px 14px;font-family:'Share Tech Mono',monospace;font-size:14px;
+  color:#c0d0ff;outline:none;transition:all .2s;letter-spacing:1px;
+}
+.login-field input:focus{border-color:#4a6ef5;box-shadow:0 0 0 3px rgba(74,110,245,.15)}
+.login-field input::placeholder{color:#2a3050}
+.login-btn{
+  margin-top:4px;width:100%;height:44px;
+  background:linear-gradient(135deg,#3a1a6a,#4a6ef5);
+  border:none;border-radius:10px;cursor:pointer;
+  font-family:'Orbitron',monospace;font-size:12px;font-weight:700;
+  color:#fff;letter-spacing:2px;text-transform:uppercase;
+  box-shadow:0 4px 20px rgba(74,110,245,.4);
+  transition:all .2s;position:relative;overflow:hidden;
+}
+.login-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.1),transparent);opacity:0;transition:.2s}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(74,110,245,.55)}
+.login-btn:hover::after{opacity:1}
+.login-btn:active{transform:translateY(1px)}
+.login-error{
+  font-size:11px;color:#e05050;text-align:center;letter-spacing:1px;
+  background:rgba(200,50,50,.1);border:1px solid rgba(200,50,50,.2);
+  border-radius:6px;padding:8px;display:none;
+}
+.login-error.show{display:block}
+.login-footer{font-size:9px;color:#2a3050;text-align:center;padding:0 28px 16px;letter-spacing:1px}
+
+/* ══════════════════════════════════════
+   ADMIN PANEL
+══════════════════════════════════════ */
+#adminPanel{display:none;width:100%;min-height:100vh;flex-direction:column;align-items:center;padding:20px}
+.admin-box{
+  background:linear-gradient(160deg,#12121a,#1a1a28,#12121a);
+  border:1px solid #2a2a40;border-radius:16px;
+  box-shadow:0 20px 60px rgba(0,0,0,.8);
+  width:100%;max-width:520px;overflow:hidden;position:relative;
+}
+.admin-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#3a1a6a,#4a6ef5,#7a3abf,#4a6ef5,#3a1a6a);background-size:200%;animation:shiftGrad 4s linear infinite}
+.admin-hdr{padding:20px 24px;border-bottom:1px solid #1e1e30;display:flex;justify-content:space-between;align-items:center}
+.admin-hdr-title{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:#4a6ef5;letter-spacing:2px}
+.admin-close{background:#1a1a2a;border:1px solid #333;border-radius:6px;color:#888;font-size:10px;padding:5px 10px;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;transition:all .2s}
+.admin-close:hover{background:#c0392b;color:#fff;border-color:#c0392b}
+.admin-body{padding:20px 24px;display:flex;flex-direction:column;gap:16px}
+.admin-section-title{font-size:10px;color:#4a6ef5;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #1e1e30;padding-bottom:6px}
+.user-list{display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto}
+.user-list::-webkit-scrollbar{width:4px}.user-list::-webkit-scrollbar-thumb{background:#2a2a40;border-radius:2px}
+.user-row{
+  display:flex;align-items:center;gap:10px;
+  background:#0a0a14;border:1px solid #1e1e2e;border-radius:8px;padding:8px 12px;
+  transition:all .2s;
+}
+.user-row:hover{border-color:#2a2a50}
+.user-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#3a1a6a,#4a6ef5);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;font-family:'Orbitron',monospace}
+.user-info{flex:1}
+.user-name{font-size:13px;color:#c0d0ff;font-weight:600;letter-spacing:.5px}
+.user-pass{font-size:10px;color:#3a4a6a;font-family:'Share Tech Mono',monospace;letter-spacing:1px}
+.user-del{background:transparent;border:1px solid #3a1a1a;border-radius:5px;color:#5a2a2a;font-size:10px;padding:3px 7px;cursor:pointer;transition:all .2s;font-family:'Rajdhani',sans-serif;font-weight:600}
+.user-del:hover{background:#c0392b;color:#fff;border-color:#c0392b}
+.add-user-form{display:flex;gap:8px;flex-wrap:wrap}
+.add-user-form input{
+  flex:1;min-width:100px;background:#0a0a14;border:1px solid #2a2a40;border-radius:7px;
+  padding:8px 11px;font-family:'Share Tech Mono',monospace;font-size:12px;color:#c0d0ff;outline:none;transition:all .2s
+}
+.add-user-form input:focus{border-color:#4a6ef5}
+.add-user-form input::placeholder{color:#2a3050;font-size:11px}
+.add-btn{
+  background:linear-gradient(135deg,#1a3a1a,#2a6a2a);border:none;border-radius:7px;
+  color:#4caf50;font-size:11px;font-family:'Rajdhani',sans-serif;font-weight:700;
+  padding:8px 14px;cursor:pointer;letter-spacing:1px;transition:all .2s;white-space:nowrap
+}
+.add-btn:hover{background:linear-gradient(135deg,#2a4a2a,#3a8a3a);color:#6ecf6e}
+.admin-note{font-size:10px;color:#3a4a5a;letter-spacing:.5px;line-height:1.6;background:#0a0a14;border-radius:8px;padding:10px 12px;border:1px solid #1a1a28}
+.admin-note b{color:#4a6ef5}
+
+/* ══════════════════════════════════════
+   APP SCREEN
+══════════════════════════════════════ */
+#appScreen{display:none;width:100%;flex-direction:column;align-items:center;padding:16px 8px 40px}
+.top-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;max-width:680px;margin-bottom:12px;
+  padding:8px 14px;
+  background:linear-gradient(135deg,#0a0a14,#12121e);
+  border:1px solid #2a2a3a;border-radius:10px;
+}
+.top-bar-user{display:flex;align-items:center;gap:8px}
+.top-bar-avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#3a1a6a,#4a6ef5);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;font-family:'Orbitron',monospace}
+.top-bar-name{font-size:12px;color:#8090b0;letter-spacing:1px}
+.top-bar-name b{color:#c0d0ff}
+.top-bar-actions{display:flex;gap:6px}
+.tb-btn{background:#1a1a2a;border:1px solid #2a2a3a;border-radius:6px;color:#6a7a9a;font-size:9px;padding:4px 9px;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;transition:all .2s}
+.tb-btn:hover{border-color:#4a6ef5;color:#c0d0ff}
+.tb-btn.admin-tb{border-color:#3a1a6a;color:#7a5abf}
+.tb-btn.admin-tb:hover{background:#1a0a2a;color:#b090ef}
+
+.main-wrapper{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;justify-content:center;width:100%;max-width:680px}
+
+/* ══════════════════════════════════════
+   CALCULATOR
+══════════════════════════════════════ */
+.calculator{
+  background:linear-gradient(175deg,#1c1c22 0%,#18181e 100%);
+  border-radius:0 0 20px 20px;
+  box-shadow:0 12px 40px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.03);
+  border:1px solid #2a2a32;border-top:none;
+  width:375px;min-width:335px;flex-shrink:0;
+}
+
+/* CORPORATE BAR */
+.corp-bar{
+  display:flex;align-items:center;gap:0;
+  background:linear-gradient(135deg,#080810 0%,#10101c 40%,#14101e 60%,#080810 100%);
+  border-radius:16px 16px 0 0;
+  border:1px solid #2a2a40;border-bottom:none;
+  position:relative;overflow:hidden;
+  padding:0;
+}
+.corp-bar::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,#3a1a6a,#4a6ef5,#9a4adf,#4a6ef5,#3a1a6a);
+  background-size:200%;animation:shiftGrad 4s linear infinite;
+}
+/* Logo corner box */
+.corp-logo-box{
+  width:62px;height:62px;flex-shrink:0;
+  background:linear-gradient(135deg,#0c0c18,#141428);
+  border-right:1px solid #2a2a40;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.corp-logo-box::after{
+  content:'';position:absolute;inset:3px;
+  border-radius:6px;
+  background:linear-gradient(135deg,rgba(74,110,245,.08),rgba(122,58,191,.08));
+  pointer-events:none;
+}
+.corp-logo{
+  width:50px;height:50px;object-fit:contain;
+  border-radius:6px;
+  filter:drop-shadow(0 0 8px rgba(74,110,245,.4));
+  background:#fff;padding:3px;
+}
+/* Info section */
+.corp-info{
+  flex:1;padding:10px 12px;
+  display:flex;flex-direction:column;justify-content:center;gap:3px;
+}
+.corp-name{
+  font-family:'Orbitron',monospace;font-size:9px;font-weight:700;
+  color:#7a9aef;letter-spacing:1.5px;text-transform:uppercase;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.corp-sub{
+  font-family:'Share Tech Mono',monospace;font-size:8px;
+  color:#3a4a6a;letter-spacing:.8px;
+}
+/* Model badge */
+.corp-badge-box{
+  padding:0 12px;height:62px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  border-left:1px solid #1e1e30;
+}
+.corp-badge-model{
+  font-family:'Orbitron',monospace;font-size:11px;font-weight:900;
+  color:#fff;letter-spacing:2px;
+}
+.corp-badge-digits{
+  font-family:'Share Tech Mono',monospace;font-size:8px;
+  color:#3a5a8a;letter-spacing:1px;
+}
+
+/* CALC INNER */
+.calc-inner{padding:0 11px 11px}
+.calc-brand-strip{display:flex;justify-content:space-between;align-items:center;padding:7px 2px 5px}
+.casio-name{font-family:'Orbitron',monospace;font-size:13px;font-weight:900;color:#dde;letter-spacing:3px}
+.model-name{font-family:'Share Tech Mono',monospace;font-size:9px;color:#555;letter-spacing:1px}
+
+/* DISPLAY */
+.display-wrap{background:#0a0a0c;border-radius:6px;padding:4px;box-shadow:inset 0 2px 8px rgba(0,0,0,.9);margin-bottom:6px}
+.display{background:#b8d4a0;border-radius:4px;padding:7px 11px 5px;position:relative;overflow:hidden}
+.display::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent)}
+.display-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+.d-item{font-family:'Share Tech Mono',monospace;font-size:10px;color:#1a3010;opacity:.75;letter-spacing:1px}
+.d-mode{font-family:'Share Tech Mono',monospace;font-size:9px;color:#1a3010;opacity:.6}
+.d-num{font-family:'Share Tech Mono',monospace;font-size:30px;font-weight:bold;color:#1a3010;text-align:right;min-height:40px;line-height:1;display:flex;align-items:flex-end;justify-content:flex-end;text-shadow:0 1px 0 rgba(255,255,255,.3);letter-spacing:2px}
+.d-num.err{color:#c00;font-size:18px}
+
+.sw-row{display:flex;gap:6px;padding:0 2px 5px;align-items:center;flex-wrap:wrap}
+.sw-lbl{font-size:8px;color:#555;letter-spacing:.5px;text-transform:uppercase}
+.swb{font-size:8px;padding:2px 5px;background:#222228;color:#888;border:1px solid #333;border-radius:3px;cursor:pointer;transition:all .15s;font-family:'Share Tech Mono',monospace}
+.swb.on{background:#1a2a5a;color:#7a9aef;border-color:#3a5aaf;box-shadow:0 0 6px rgba(74,110,245,.3)}
+.swb:hover{background:#2a2a38;color:#aaa}
+
+/* BUTTON GRID */
+.btn-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding-top:2px}
+.btn{height:38px;border-radius:6px;border:1px solid #2e2e38;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:11px;color:#c0c0cc;background:linear-gradient(180deg,#252530,#1e1e28);transition:all .08s;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 3px 0 #0a0a10,0 4px 6px rgba(0,0,0,.4);text-transform:uppercase;letter-spacing:.4px;line-height:1.1;user-select:none;-webkit-user-select:none}
+.btn .sub{font-size:7px;color:#666;font-weight:400}
+.btn:hover{background:linear-gradient(180deg,#2e2e3e,#262630);transform:translateY(-1px)}
+.btn:active{transform:translateY(2px)!important;box-shadow:0 1px 0 #0a0a10!important}
+.btn.w2{grid-column:span 2}
+.bCA{background:linear-gradient(180deg,#5a0000,#3a0000)!important;color:#ff8080!important;border-color:#6a0000!important;box-shadow:0 3px 0 #200,0 4px 6px rgba(0,0,0,.4)!important}.bCA:hover{background:linear-gradient(180deg,#700000,#4a0000)!important}
+.bC{background:linear-gradient(180deg,#6a1a1a,#4a1010)!important;color:#ffaaaa!important;border-color:#7a2020!important;box-shadow:0 3px 0 #300808,0 4px 6px rgba(0,0,0,.4)!important}.bC:hover{background:linear-gradient(180deg,#802020,#601818)!important}
+.bStar{background:linear-gradient(180deg,#6a3000,#4a2000)!important;color:#ffbb66!important;border-color:#7a3800!important;box-shadow:0 3px 0 #281000,0 4px 6px rgba(0,0,0,.4)!important}.bStar:hover{background:linear-gradient(180deg,#804000,#603000)!important}
+.bPEq{background:linear-gradient(180deg,#0a2a50,#061a38)!important;color:#6abaff!important;border-color:#1a4a80!important;box-shadow:0 3px 0 #020e20,0 4px 6px rgba(0,0,0,.4)!important;font-size:13px!important}.bPEq:hover{background:linear-gradient(180deg,#0e3860,#0a2448)!important}
+.bMin{background:linear-gradient(180deg,#2a1050,#1a0838)!important;color:#cc88ff!important;border-color:#3a1868!important;box-shadow:0 3px 0 #0e0420,0 4px 6px rgba(0,0,0,.4)!important}.bMin:hover{background:linear-gradient(180deg,#381460,#280c48)!important}
+.bMul{background:linear-gradient(180deg,#0a2a0a,#061806)!important;color:#66cc66!important;border-color:#1a4a1a!important;box-shadow:0 3px 0 #020e02,0 4px 6px rgba(0,0,0,.4)!important}.bMul:hover{background:linear-gradient(180deg,#0e380e,#0a260a)!important}
+.bDiv{background:linear-gradient(180deg,#0a2a0a,#061806)!important;color:#66cc66!important;border-color:#1a4a1a!important;box-shadow:0 3px 0 #020e02,0 4px 6px rgba(0,0,0,.4)!important}.bDiv:hover{background:linear-gradient(180deg,#0e380e,#0a260a)!important}
+.bEq{background:linear-gradient(180deg,#1a2030,#101520)!important;color:#aabbd0!important;border-color:#2a3040!important;box-shadow:0 3px 0 #080c10,0 4px 6px rgba(0,0,0,.4)!important}.bEq:hover{background:linear-gradient(180deg,#202838,#181e28)!important}
+.bHash{background:linear-gradient(180deg,#0a1828,#060e18)!important;color:#6a9acf!important;border-color:#1a2838!important;font-size:13px!important}.bHash:hover{background:linear-gradient(180deg,#0e2030,#0a1620)!important}
+.bMst{background:linear-gradient(180deg,#2a2000,#1a1400)!important;color:#e0b840!important;border-color:#3a2c00!important;box-shadow:0 3px 0 #0a0800,0 4px 6px rgba(0,0,0,.4)!important}.bMst:hover{background:linear-gradient(180deg,#382c00,#262000)!important}
+
+.act-strip{display:flex;gap:7px;padding:8px 0 0}
+.act-btn{flex:1;height:28px;background:linear-gradient(135deg,#12121e,#1a1a28);border:1px solid #2a2a3a;border-radius:6px;color:#6a7a9a;font-size:9px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;cursor:pointer;transition:all .15s;text-transform:uppercase}
+.act-btn:hover{background:linear-gradient(135deg,#1a1a2e,#22223a);color:#c0d0ff;border-color:#3a4a6a}
+.act-btn.on{background:linear-gradient(135deg,#0a1a0a,#121e12);color:#4caf50;border-color:#2a4a2a}
+
+/* TAPE */
+.tape-panel{width:258px;min-width:215px;display:flex;flex-direction:column}
+.tape-hdr{background:linear-gradient(135deg,#0a0a14,#12121e);border-radius:10px 10px 0 0;padding:8px 13px;display:flex;justify-content:space-between;align-items:center;border:1px solid #2a2a3a;border-bottom:none}
+.tape-ttl{font-family:'Orbitron',monospace;font-size:9px;color:#4a6ef5;letter-spacing:2px}
+.tape-ctrls{display:flex;gap:5px}
+.tc{font-size:8px;padding:2px 6px;background:#12121e;color:#6a7a9a;border:1px solid #2a2a3a;border-radius:3px;cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:.5px;transition:all .15s;text-transform:uppercase}
+.tc:hover{background:#1e1e30;color:#c0d0ff}
+.tc.dng:hover{background:#3a0000;color:#ff8080;border-color:#6a0000}
+.tape-box{background:#f8f5ee;border:1px solid #3a3a4a;border-top:none;border-bottom:none;height:575px;overflow-y:auto;position:relative;background-image:repeating-linear-gradient(to bottom,transparent,transparent 19px,#d4c9a8 19px,#d4c9a8 20px)}
+.tape-box::-webkit-scrollbar{width:4px}.tape-box::-webkit-scrollbar-track{background:#ddd}.tape-box::-webkit-scrollbar-thumb{background:#aaa;border-radius:2px}
+.tape-in{padding:8px 10px;font-family:'Share Tech Mono',monospace;font-size:12px;color:#1a1a1a;min-height:100%}
+.tl{font-family:'Share Tech Mono',monospace;font-size:12px;color:#222;padding:1px 0;min-height:20px;line-height:20px;animation:pop .13s ease-out;white-space:pre;display:block}
+@keyframes pop{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.lh  {color:#1a5276}
+.lp  {color:#1a5276}
+.lsub{color:#1a7a40;font-weight:bold}
+.ltot{color:#c0392b;font-weight:bold}
+.lmin{color:#8b0000;font-weight:bold}
+.lca {color:#888;font-style:italic}
+.lhdr{color:#666;font-size:10px}
+.lsep{border-bottom:1px dashed #bbb;margin:2px 0;min-height:4px;display:block}
+.pbar{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#4a6ef5,transparent);animation:pscan .3s ease-out;pointer-events:none}
+@keyframes pscan{from{opacity:1;top:0}to{opacity:0;top:40px}}
+.tape-ftr{background:linear-gradient(135deg,#0a0a14,#12121e);border-radius:0 0 10px 10px;padding:7px 13px;border:1px solid #2a2a3a;border-top:none;display:flex;align-items:center;gap:8px}
+.tape-ftr-logo{width:24px;height:24px;object-fit:contain;opacity:.6;background:#fff;border-radius:3px;padding:2px}
+.tape-ftr-txt{font-size:8px;color:#3a4a6a;letter-spacing:.5px;text-transform:uppercase;flex:1}
+
+#soundToggle.on{color:#4caf50;border-color:#2a4a2a}
+@media(max-width:660px){.main-wrapper{flex-direction:column;align-items:center}.tape-panel{width:340px}.tape-box{height:280px}}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     LOGIN SCREEN
+══════════════════════════════════════ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-header">
+      <div class="login-logo-wrap">
+        <div class="login-logo-glow"></div>
+        <img class="login-logo" src="data:image/jpeg;base64,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" onerror="this.style.background='#1a1a2e';this.style.padding='0'" alt="MPT">
+      </div>
+      <div class="login-title">Master Professional Training</div>
+      <div class="login-subtitle">Centro de Capacitación MB · Panamá</div>
+    </div>
+    <div class="login-body">
+      <div class="login-field">
+        <label>Usuario</label>
+        <input type="text" id="loginUser" placeholder="Ingresa tu usuario" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <div class="login-field">
+        <label>Contraseña</label>
+        <input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <div class="login-error" id="loginError">Usuario o contraseña incorrectos</div>
+      <button class="login-btn" onclick="doLogin()">INGRESAR</button>
+    </div>
+    <div class="login-footer">Casio HR-100RC Simulator v2.0 &nbsp;·&nbsp; © Master Professional Training</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     ADMIN PANEL
+══════════════════════════════════════ -->
+<div id="adminPanel">
+  <div class="admin-box">
+    <div class="admin-hdr">
+      <span class="admin-hdr-title">⚙ ADMINISTRACIÓN DE USUARIOS</span>
+      <button class="admin-close" onclick="closeAdmin()">✕ CERRAR</button>
+    </div>
+    <div class="admin-body">
+      <div class="admin-section-title">USUARIOS REGISTRADOS</div>
+      <div class="user-list" id="userList"></div>
+
+      <div class="admin-section-title">AGREGAR USUARIO</div>
+      <div class="add-user-form">
+        <input type="text" id="newUser" placeholder="Nombre de usuario" autocomplete="off">
+        <input type="password" id="newPass" placeholder="Contraseña">
+        <button class="add-btn" onclick="addUser()">+ AGREGAR</button>
+      </div>
+
+      <div class="admin-note">
+        <b>¿Cómo gestionar usuarios?</b><br>
+        • Para <b>agregar</b>: escribe el nombre y contraseña arriba y haz clic en + AGREGAR.<br>
+        • Para <b>eliminar</b>: haz clic en el botón 🗑 rojo junto al usuario.<br>
+        • Los cambios se guardan en la nube y se ven en todos los navegadores.<br>
+        • El usuario <b>Joses</b> es el administrador y no puede eliminarse.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     APP SCREEN
+══════════════════════════════════════ -->
+<div id="appScreen">
+
+  <!-- top bar -->
+  <div class="top-bar" style="max-width:680px;width:100%">
+    <div class="top-bar-user">
+      <div class="top-bar-avatar" id="tbAvatar">?</div>
+      <div class="top-bar-name">Bienvenido, <b id="tbName">-</b></div>
+    </div>
+    <div class="top-bar-actions">
+      <button class="tb-btn admin-tb" id="adminBtn" onclick="openAdmin()" style="display:none">⚙ ADMIN</button>
+      <button class="tb-btn" onclick="doLogout()">↩ SALIR</button>
+    </div>
+  </div>
+
+  <div class="main-wrapper">
+
+  <!-- ══ CALCULATOR ══ -->
+  <div style="display:flex;flex-direction:column">
+    <!-- CORPORATE BAR -->
+    <div class="corp-bar">
+      <div class="corp-logo-box">
+        <img class="corp-logo" src="data:image/jpeg;base64,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" onerror="this.style.display='none'" alt="MPT">
+      </div>
+      <div class="corp-info">
+        <span class="corp-name">Master Professional Training</span>
+        <span class="corp-sub">Centro de Capacitación MB · Panamá</span>
+      </div>
+      <div class="corp-badge-box">
+        <span class="corp-badge-model">CASIO</span>
+        <span class="corp-badge-digits">HR-100RC</span>
+      </div>
+    </div>
+
+    <div class="calculator">
+    <div class="calc-inner">
+      <div class="calc-brand-strip">
+        <span class="casio-name">CASIO</span>
+        <span class="model-name">HR-100RC &nbsp; 12 DIGITS</span>
+      </div>
+
+      <!-- DISPLAY -->
+      <div class="display-wrap">
+        <div class="display">
+          <div class="display-top">
+            <span class="d-item" id="dItem">ITEM: 000</span>
+            <span class="d-mode" id="dMode">2 54</span>
+          </div>
+          <div class="d-num" id="dNum">0.00</div>
+        </div>
+      </div>
+
+      <!-- SWITCHES -->
+      <div class="sw-row">
+        <span class="sw-lbl">DEC:</span>
+        <div id="decSw" style="display:flex;gap:2px">
+          <button class="swb" data-v="F" onclick="setDec('F')">F</button>
+          <button class="swb" data-v="3" onclick="setDec('3')">3</button>
+          <button class="swb on" data-v="2" onclick="setDec('2')">2</button>
+          <button class="swb" data-v="0" onclick="setDec('0')">0</button>
+        </div>
+        <span class="sw-lbl" style="margin-left:8px">RND:</span>
+        <div id="rndSw" style="display:flex;gap:2px">
+          <button class="swb on" data-v="54" onclick="setRnd('54')">5/4</button>
+          <button class="swb" data-v="up" onclick="setRnd('up')">UP</button>
+          <button class="swb" data-v="cut" onclick="setRnd('cut')">CUT</button>
+        </div>
+      </div>
+
+      <!-- BUTTON GRID  — 7 columns, lone + REMOVED -->
+      <div class="btn-grid">
+        <!-- row 1 -->
+        <button class="btn bCA" onclick="kCA()">CA</button>
+        <button class="btn bHash" onclick="kHash()">◇/#</button>
+        <button class="btn" onclick="kBack()">◄</button>
+        <button class="btn" onclick="kPM()">+/−</button>
+        <button class="btn" style="font-size:9px;color:#888">Δ%</button>
+        <button class="btn" style="font-size:9px;color:#e06060" onclick="kTaxM()">TAX−</button>
+        <button class="btn" style="font-size:9px;color:#60c060" onclick="kTaxP()">TAX+</button>
+        <!-- row 2 -->
+        <button class="btn" style="font-size:9px;color:#888" onclick="kAvg()">AVG<br><span class="sub">IT</span></button>
+        <button class="btn" onclick="kN('7')">7</button>
+        <button class="btn" onclick="kN('8')">8</button>
+        <button class="btn" onclick="kN('9')">9</button>
+        <button class="btn bMin" onclick="kMinus()">−</button>
+        <button class="btn bDiv" onclick="kDiv()">÷</button>
+        <button class="btn bMst" onclick="kMRec()">M*</button>
+        <!-- row 3 -->
+        <button class="btn" onclick="kPct()">%</button>
+        <button class="btn" onclick="kN('4')">4</button>
+        <button class="btn" onclick="kN('5')">5</button>
+        <button class="btn" onclick="kN('6')">6</button>
+        <button class="btn bPEq" onclick="kPlusEq()" style="grid-row:span 3;height:auto;font-size:13px!important">+=</button>
+        <button class="btn bMul" onclick="kMul()">×</button>
+        <button class="btn" style="font-size:9px;color:#888" onclick="kMex()">M◇</button>
+        <!-- row 4  — lone + REMOVED, replaced with empty spacer -->
+        <button class="btn" style="font-size:9px;color:#888">MU<br><span class="sub">MD</span></button>
+        <button class="btn" onclick="kN('1')">1</button>
+        <button class="btn" onclick="kN('2')">2</button>
+        <button class="btn" onclick="kN('3')">3</button>
+        <button class="btn" style="font-size:9px;color:#b07a20" onclick="kGT()">G*</button>
+        <button class="btn" style="color:#e06060;font-size:12px" onclick="kMm()">M−</button>
+        <!-- row 5 -->
+        <button class="btn bC" onclick="kC()">C</button>
+        <button class="btn" onclick="kN('0')">0</button>
+        <button class="btn" onclick="kN('00')">00</button>
+        <button class="btn" onclick="kDot()">.</button>
+        <button class="btn bStar" onclick="kStar()">*</button>
+        <button class="btn" style="color:#60c060;font-size:12px" onclick="kMp()">M+</button>
+      </div>
+
+      <div class="act-strip">
+        <button class="act-btn" onclick="exportTape()">📄 Exportar</button>
+        <button class="act-btn on" id="soundToggle" onclick="toggleSound()">🔊 Sonido</button>
+        <button class="act-btn" onclick="clearAll()">🗑 Borrar</button>
+      </div>
+    </div><!-- calc-inner -->
+    </div><!-- calculator -->
+  </div>
+
+  <!-- ══ TAPE ══ -->
+  <div class="tape-panel">
+    <div class="tape-hdr">
+      <span class="tape-ttl">📠 CINTA</span>
+      <div class="tape-ctrls">
+        <button class="tc" onclick="exportTape()">TXT</button>
+        <button class="tc dng" onclick="clearAll()">CLR</button>
+      </div>
+    </div>
+    <div class="tape-box" id="tapeBox">
+      <div class="tape-in" id="tapeIn"></div>
+    </div>
+    <div class="tape-ftr">
+      <img class="tape-ftr-logo" src="data:image/jpeg;base64,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" onerror="this.style.display='none'" alt="">
+      <div class="tape-ftr-txt">Master Professional Training · Panamá</div>
+    </div>
+  </div>
+
+  </div><!-- main-wrapper -->
+</div><!-- appScreen -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ══════════════════════════════════════════════════
+   SUPABASE (NUBE)
+   ─────────────────────────────────────────────────
+   Los usuarios y el login viven en Supabase.
+   Las contraseñas están encriptadas en la base de datos
+   y ya NO aparecen en el código fuente.
+══════════════════════════════════════════════════ */
+const SUPABASE_URL = 'https://dxirscchkvskqavjyubl.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_JFTurh-K6SZ8wD3WgHl9fw__kZ3r9Q8';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let USERS = [];
+let currentUser = null;
+const APP_EMAIL_DOMAIN = 'mpt.app'; // el usuario inicia sesión con su nombre; internamente usamos nombre@mpt.app
+
+async function loadUsers(){
+  const { data, error } = await supabase.from('profiles').select('*').order('username');
+  if(!error && data) USERS = data;
+  return USERS;
+}
+
+/* ══════════════════════════════════════════════════
+   LOGIN
+══════════════════════════════════════════════════ */
+async function doLogin(){
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const err = document.getElementById('loginError');
+  if(!u || !p){
+    err.textContent = 'Ingresa usuario y contraseña';
+    err.classList.add('show');
+    return;
+  }
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: u.toLowerCase()+'@'+APP_EMAIL_DOMAIN,
+    password: p
+  });
+  if(error || !data.user){
+    err.textContent = 'Usuario o contraseña incorrectos';
+    err.classList.add('show');
+    document.getElementById('loginPass').value='';
+    return;
+  }
+  const { data: prof, error: perr } = await supabase.from('profiles').select('*').eq('id', data.user.id).maybeSingle();
+  if(perr || !prof){
+    await supabase.auth.signOut();
+    err.textContent = 'Este usuario no tiene perfil asignado.';
+    err.classList.add('show');
+    return;
+  }
+  err.classList.remove('show');
+  currentUser = { id: prof.id, u: prof.username, admin: prof.admin };
+  document.getElementById('loginUser').value='';
+  document.getElementById('loginPass').value='';
+  // Show app
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('appScreen').style.display='flex';
+  // Set user info
+  document.getElementById('tbName').textContent = prof.username;
+  document.getElementById('tbAvatar').textContent = prof.username[0].toUpperCase();
+  document.getElementById('adminBtn').style.display = prof.admin ? 'block' : 'none';
+  // Init tape
+  initTape();
+}
+
+async function doLogout(){
+  await supabase.auth.signOut();
+  currentUser = null;
+  document.getElementById('appScreen').style.display='none';
+  document.getElementById('adminPanel').style.display='none';
+  document.getElementById('loginScreen').style.display='flex';
+  clearAll(true);
+}
+
+/* ══════════════════════════════════════════════════
+   ADMIN PANEL
+══════════════════════════════════════════════════ */
+async function openAdmin(){
+  if(!currentUser?.admin) return;
+  await renderUserList();
+  document.getElementById('appScreen').style.display='none';
+  document.getElementById('adminPanel').style.display='flex';
+}
+function closeAdmin(){
+  document.getElementById('adminPanel').style.display='none';
+  document.getElementById('appScreen').style.display='flex';
+}
+
+async function renderUserList(){
+  await loadUsers();
+  const ul = document.getElementById('userList');
+  ul.innerHTML='';
+  USERS.forEach(u=>{
+    const row=document.createElement('div');
+    row.className='user-row';
+    const initials = u.username.substring(0,2).toUpperCase();
+    row.innerHTML=`
+      <div class="user-avatar">${initials}</div>
+      <div class="user-info">
+        <div class="user-name">${u.username}${u.admin?' <span style="font-size:9px;color:#4a6ef5;letter-spacing:1px">[ADMIN]</span>':''}</div>
+        <div class="user-pass">${u.admin?'Administrador':'Usuario'}</div>
+      </div>
+      ${u.admin?'<span style="font-size:10px;color:#2a3a5a;padding:0 8px">🔒</span>':`<button class="user-del" onclick="delUser('${u.id}')">🗑 Eliminar</button>`}
+    `;
+    ul.appendChild(row);
+  });
+}
+
+async function delUser(id){
+  const target = USERS.find(x=>x.id===id);
+  if(!target) return;
+  if(target.admin){ alert('No se puede eliminar al administrador.'); return; }
+  if(id===currentUser.id){ alert('No puedes eliminar tu propio usuario.'); return; }
+  if(!confirm(`¿Eliminar usuario "${target.username}"?`)) return;
+  const { error } = await supabase.rpc('admin_delete_user', { p_id: id });
+  if(error){ alert('Error al eliminar: '+(error.message||'intenta de nuevo')); return; }
+  await renderUserList();
+}
+
+async function addUser(){
+  const u = document.getElementById('newUser').value.trim();
+  const p = document.getElementById('newPass').value.trim();
+  if(!u||!p){ alert('Ingresa nombre y contraseña.'); return; }
+  if(!/^[a-zA-Z0-9_.-]+$/.test(u)){ alert('El usuario solo puede tener letras, números, . _ y -'); return; }
+  if(USERS.find(x=>x.username.toLowerCase()===u.toLowerCase())){ alert('Ese usuario ya existe.'); return; }
+  const { error } = await supabase.rpc('admin_create_user', { p_username: u, p_password: p, p_admin: false });
+  if(error){ alert('No se pudo crear: '+(error.message||'error')); return; }
+  document.getElementById('newUser').value='';
+  document.getElementById('newPass').value='';
+  await renderUserList();
+}
+
+/* ══════════════════════════════════════════════════
+   CALCULATOR STATE
+══════════════════════════════════════════════════ */
+const S = {
+  entry:'', accum:0, mulA:null, divA:null, inMul:false, inDiv:false,
+  opsCount:0, decMode:'2', rndMode:'54', soundOn:true, memory:0, taxRate:7,
+  starPhase:0,
+};
+
+/* ══════════════════════════════════════════════════
+   AUDIO
+══════════════════════════════════════════════════ */
+let actx=null;
+function _ac(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx;}
+function sClick(){if(!S.soundOn)return;try{const c=_ac(),b=c.createBuffer(1,460,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<460;i++)d[i]=(Math.random()*2-1)*(1-i/460)*.17;const s=c.createBufferSource();s.buffer=b;s.connect(c.destination);s.start();}catch(e){}}
+function sPrint(){if(!S.soundOn)return;try{const c=_ac(),n=Math.floor(c.sampleRate*.12),b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/c.sampleRate*26)*.2;const s=c.createBufferSource();s.buffer=b;s.connect(c.destination);s.start();}catch(e){}}
+
+/* ══════════════════════════════════════════════════
+   DISPLAY
+══════════════════════════════════════════════════ */
+function showNum(v){const el=document.getElementById('dNum');el.className='d-num';el.textContent=fD(v);}
+function showRaw(s){document.getElementById('dNum').textContent=s+(s.includes('.')?'':'.');}
+function showErr(m){const el=document.getElementById('dNum');el.className='d-num err';el.textContent=m;}
+function updItem(){document.getElementById('dItem').textContent='ITEM: '+p3(S.opsCount);}
+function updMode(){document.getElementById('dMode').textContent=S.decMode+' '+S.rndMode;}
+function fD(v){const n=parseFloat(v);if(isNaN(n))return String(v);if(S.decMode==='F')return n.toString()+(String(n).includes('.')?'':'.');return n.toFixed(parseInt(S.decMode)||2);}
+function fT(n){if(S.decMode==='F')return n.toString()+(String(n).includes('.')?'':'.');return n.toFixed(parseInt(S.decMode)||2);}
+function rnd(n){if(S.decMode==='F')return n;const dec=parseInt(S.decMode)||2,f=Math.pow(10,dec);if(S.rndMode==='54')return Math.round(n*f)/f;if(S.rndMode==='up')return Math.ceil(n*f)/f;return Math.floor(n*f)/f;}
+function p3(n){return String(Math.abs(n)).padStart(3,'0');}
+function dPad(s,len=24){return s+'.'.repeat(Math.max(0,len-s.length));}
+function curV(){return parseFloat(S.entry||'0')||0;}
+
+/* ══════════════════════════════════════════════════
+   TAPE
+══════════════════════════════════════════════════ */
+const TW=22;
+function tl(text,cls){
+  sPrint();
+  const inn=document.getElementById('tapeIn');
+  const row=document.createElement('div');
+  row.className='tl'+(cls?' '+cls:'');
+  row.textContent=text;
+  inn.appendChild(row);
+  const bar=document.createElement('div');bar.className='pbar';
+  document.getElementById('tapeBox').appendChild(bar);
+  setTimeout(()=>bar.remove(),360);
+  setTimeout(()=>{const b=document.getElementById('tapeBox');b.scrollTop=b.scrollHeight;},45);
+}
+function tsep(){const inn=document.getElementById('tapeIn');const d=document.createElement('div');d.className='tl lsep';inn.appendChild(d);}
+function tNum(val,op,cls){tl((fT(val)+op).padStart(TW),cls);}
+
+function initTape(){
+  document.getElementById('tapeIn').innerHTML='';
+  tl(dPad('MASTER PROFESSIONAL TRAINING'),'lhdr');
+  tl('Centro Cap. MB · Panama','lhdr');
+  if(currentUser) tl(dPad('Usuario: '+currentUser.u),'lhdr');
+  tsep();
+}
+
+/* ══════════════════════════════════════════════════
+   SWITCHES
+══════════════════════════════════════════════════ */
+function setDec(m){S.decMode=m;document.querySelectorAll('#decSw .swb').forEach(b=>b.classList.toggle('on',b.dataset.v===m));updMode();sClick();}
+function setRnd(m){S.rndMode=m;document.querySelectorAll('#rndSw .swb').forEach(b=>b.classList.toggle('on',b.dataset.v===m));updMode();sClick();}
+
+/* ══════════════════════════════════════════════════
+   NUMBER ENTRY
+══════════════════════════════════════════════════ */
+function kN(d){sClick();if(d==='00'){if(!S.entry||S.entry==='0')return;S.entry+='00';}else{S.entry=(S.entry===''||S.entry==='0')?d:S.entry+d;}const nd=S.entry.replace('-','').split('.')[0];if(nd.length>10){S.entry=S.entry.slice(0,-d.length);return;}showRaw(S.entry);}
+function kDot(){sClick();if(S.entry.includes('.'))return;if(!S.entry)S.entry='0';S.entry+='.';showRaw(S.entry);}
+function kBack(){sClick();if(S.entry.length>0){S.entry=S.entry.slice(0,-1);showRaw(S.entry||'0');}}
+function kPM(){sClick();if(!S.entry)return;S.entry=S.entry.startsWith('-')?S.entry.slice(1):'-'+S.entry;showRaw(S.entry);}
+
+/* ══════════════════════════════════════════════════
+   × ÷
+══════════════════════════════════════════════════ */
+function kMul(){sClick();const v=curV();S.mulA=v;S.inMul=true;S.inDiv=false;S.divA=null;tl(fT(v).padStart(TW-1)+'x');S.entry='';showNum(v);}
+function kDiv(){sClick();const v=curV();S.divA=v;S.inDiv=true;S.inMul=false;S.mulA=null;tl(fT(v).padStart(TW-1)+'÷');S.entry='';showNum(v);}
+
+/* = standalone */
+function kEq(){sClick();if(S.inMul&&S.mulA!==null){const v2=curV(),res=rnd(S.mulA*v2);tl(fT(v2).padStart(TW-1)+'=');S.accum=rnd(S.accum+res);S.inMul=false;S.mulA=null;S.entry='';showNum(res);return;}if(S.inDiv&&S.divA!==null){if(curV()===0){showErr('E:÷0');return;}const v2=curV(),res=rnd(S.divA/v2);tl(fT(v2).padStart(TW-1)+'=');S.accum=rnd(S.accum+res);S.inDiv=false;S.divA=null;S.entry='';showNum(res);return;}}
+
+/* ══════════════════════════════════════════════════
+   *  prints  003......* + total* (red)
+══════════════════════════════════════════════════ */
+function kStar(){
+  sClick();
+  if(S.entry!==''){const v=rnd(curV());tNum(v,'+','lp');S.accum=rnd(S.accum+v);S.opsCount++;updItem();S.entry='';}
+  const tot=rnd(S.accum);
+  tl(dPad(p3(S.opsCount)).padEnd(TW-1)+'*','lh');
+  tNum(tot,'*','ltot');
+  if(S.starPhase===0) S.starPhase=1;
+  else if(S.starPhase===3) S.starPhase=4;
+  showNum(tot);
+}
+
+/* ══════════════════════════════════════════════════
+   +=
+══════════════════════════════════════════════════ */
+function kPlusEq(){
+  sClick();
+  // Phase 4: final += after second * → print total+ and close session
+  if(S.starPhase===4){
+    const tot=rnd(S.accum);
+    tNum(tot,'+','lsub');
+    S.accum=0;S.opsCount=0;S.entry='';S.starPhase=0;
+    tsep();showNum(0);updItem();
+    return;
+  }
+  // Phase 1: += right after first * → print total+ ONCE, then wait for manual −
+  if(S.starPhase===1){
+    const tot=rnd(S.accum);
+    tNum(tot,'+','lsub');   // prints  130.00+  just once
+    S.starPhase=2;          // now waiting: user types amount → −
+    S.entry='';
+    showNum(tot);
+    return;
+  }
+  // Normal: pending × → print v2= then result+
+  if(S.inMul&&S.mulA!==null){
+    const v2=curV(),res=rnd(S.mulA*v2);
+    tl(fT(v2).padStart(TW-1)+'=');
+    tNum(res,'+','lp');
+    S.accum=rnd(S.accum+res);S.opsCount++;updItem();
+    S.inMul=false;S.mulA=null;S.entry='';
+    showNum(S.accum);return;
+  }
+  // Normal: pending ÷
+  if(S.inDiv&&S.divA!==null){
+    if(curV()===0){showErr('E:÷0');return;}
+    const v2=curV(),res=rnd(S.divA/v2);
+    tl(fT(v2).padStart(TW-1)+'=');
+    tNum(res,'+','lp');
+    S.accum=rnd(S.accum+res);S.opsCount++;updItem();
+    S.inDiv=false;S.divA=null;S.entry='';
+    showNum(S.accum);return;
+  }
+  // Normal: plain number → print value+ only (no duplicate subtotal)
+  if(S.entry!==''){
+    const v=rnd(curV());
+    tNum(v,'+','lp');
+    S.accum=rnd(S.accum+v);S.opsCount++;updItem();
+    S.entry='';
+    showNum(S.accum);
+    return;
+  }
+  // No entry, no pending op: just show running subtotal once
+  tNum(rnd(S.accum),'+','lsub');
+  showNum(S.accum);
+}
+
+/* ══════════════════════════════════════════════════
+   −  always prints, advances phase 2→3
+══════════════════════════════════════════════════ */
+function kMinus(){sClick();const v=rnd(curV());tNum(v,'−','lmin');S.accum=rnd(S.accum-v);S.entry='';if(S.starPhase===2)S.starPhase=3;showNum(S.accum);}
+
+/* misc */
+function kCA(){sClick();S.entry='';S.accum=0;S.mulA=null;S.divA=null;S.inMul=false;S.inDiv=false;S.starPhase=0;tl('..........CA'.padStart(TW),'lca');showNum(0);}
+function kC(){sClick();S.entry='';showNum(0);}
+function kHash(){sClick();const val=S.entry||'0';tl(dPad('#'+val),'lh');S.entry='';}
+function kMp(){sClick();S.memory=rnd(S.memory+curV());S.entry='';showNum(S.memory);}
+function kMm(){sClick();S.memory=rnd(S.memory-curV());S.entry='';showNum(S.memory);}
+function kMRec(){sClick();tNum(S.memory,'*','ltot');showNum(S.memory);}
+function kMex(){sClick();S.entry=fT(S.memory);showNum(S.memory);}
+function kPct(){sClick();const v=rnd(curV()/100);S.entry=String(v);showNum(v);}
+function kTaxP(){sClick();const v=rnd(curV()*(1+S.taxRate/100));tNum(v,'+','lp');showNum(v);}
+function kTaxM(){sClick();const v=rnd(curV()/(1+S.taxRate/100));tNum(v,'−','lmin');showNum(v);}
+function kAvg(){sClick();}
+function kGT(){sClick();tNum(rnd(S.accum),'*','ltot');showNum(S.accum);}
+
+function clearAll(silent){
+  document.getElementById('tapeIn').innerHTML='';
+  S.entry='';S.accum=0;S.mulA=null;S.divA=null;
+  S.inMul=false;S.inDiv=false;S.opsCount=0;S.memory=0;S.starPhase=0;
+  showNum(0);updItem();
+  if(!silent && currentUser) initTape();
+}
+function toggleSound(){S.soundOn=!S.soundOn;const b=document.getElementById('soundToggle');b.textContent=S.soundOn?'🔊 Sonido':'🔇 Sonido';b.classList.toggle('on',S.soundOn);}
+function exportTape(){
+  const rows=document.querySelectorAll('#tapeIn .tl');
+  let txt='=========================================\n  MASTER PROFESSIONAL TRAINING\n  Centro de Capacitacion MB - Panama\n=========================================\n\n';
+  rows.forEach(r=>{if(r.classList.contains('lsep')){txt+='-----------------------------------------\n';return;}txt+=r.textContent+'\n';});
+  txt+='\n=========================================\n  ITEM: '+p3(S.opsCount)+'\n  Fecha: '+new Date().toLocaleString('es-PA')+'\n=========================================\n';
+  const a=document.createElement('a');a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(txt);a.download='cinta_'+new Date().toISOString().slice(0,10)+'.txt';a.click();
+}
+
+/* keyboard
+   Teclado numérico:
+   0-9        → dígitos
+   .          → decimal
+   +          → +=  (suma acumulada)
+   -          → −   (resta)
+   *          → *   (total/star)
+   /          → ÷
+   x / X      → ×
+   Enter      → ◇/# (código/hash)
+   =          → =   (igual standalone)
+   Backspace  → ◄ corregir
+   Escape     → CA
+   Delete     → C
+*/
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('appScreen').style.display==='none') return;
+  // Don't capture if user is typing in an input field
+  if(e.target.tagName==='INPUT') return;
+  if(e.key>='0'&&e.key<='9') kN(e.key);
+  else if(e.key==='.') kDot();
+  else if(e.key==='+') { e.preventDefault(); kPlusEq(); }   // + → +=
+  else if(e.key==='-') kMinus();
+  else if(e.key==='*') kStar();
+  else if(e.key==='/'){e.preventDefault();kDiv();}
+  else if(e.key==='x'||e.key==='X') kMul();
+  else if(e.key==='Enter'){ e.preventDefault(); kHash(); }   // Enter → ◇/#
+  else if(e.key==='=') kEq();                                 // = → igual
+  else if(e.key==='Backspace') kBack();
+  else if(e.key==='Escape') kCA();
+  else if(e.key==='Delete') kC();
+});
+
+/* init display */
+showNum(0);updItem();updMode();
+
+/* ══ restaurar sesión: si ya había iniciado sesión, entrar directo ══ */
+(async function initSession(){
+  const { data: { session } } = await supabase.auth.getSession();
+  if(!session?.user) return;
+  const { data: prof } = await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+  if(!prof) return;
+  currentUser = { id: prof.id, u: prof.username, admin: prof.admin };
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('appScreen').style.display='flex';
+  document.getElementById('tbName').textContent = prof.username;
+  document.getElementById('tbAvatar').textContent = prof.username[0].toUpperCase();
+  document.getElementById('adminBtn').style.display = prof.admin ? 'block' : 'none';
+  initTape();
+})();
+
+/* ══ usuarios en tiempo real: la lista se actualiza sola si alguien agrega/elimina ══ */
+supabase.channel('profiles-realtime')
+  .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, () => {
+    if(currentUser && document.getElementById('adminPanel').style.display==='flex'){
+      renderUserList();
+    }
+  })
+  .subscribe();
+</script>
+
+
+</body></html>
